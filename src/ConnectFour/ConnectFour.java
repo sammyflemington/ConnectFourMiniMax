@@ -37,9 +37,12 @@ public class ConnectFour extends JFrame{
 			int colWidth = getWidth() / displayBoard.getNumCols();
 			int col = Math.round(x / colWidth);
 			// try to place a piece here for player 
-			displayBoard.dropPiece(nextTurn(), col);
-			Node n = new Node(getBoard(), 1);
-			System.out.println(mm.minimax(n, 5, true));
+			displayBoard.dropPiece(1, col);
+			Node n = new Node(getBoard(), 2, null);
+			Node chosen = mm.minimaxNode(n, 4, false);
+			displayBoard.dropPiece(2, chosen.getMove());
+			
+			System.out.println(displayBoard.evaluate());
 			
 			repaint();	// Repaint the panel
 		}

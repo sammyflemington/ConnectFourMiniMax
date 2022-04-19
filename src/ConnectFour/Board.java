@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.swing.JPanel;
@@ -22,14 +23,23 @@ public class Board extends JPanel{
 	public Board(int currentPlayer) {
 		super();
 		board = new Integer[WIDTH][HEIGHT];
-		currentPlayer = currentPlayer;
+		this.currentPlayer = currentPlayer;
 	}
 	public Board(Board b) {
 		super();
-		board = b.getBoard();
+		board = new Integer[WIDTH][HEIGHT];
+		for(int i = 0; i < WIDTH; i++) {
+			for (int j = 0; j < HEIGHT; j++) {
+				board[i][j] = b.getBoard()[i][j];
+			}
+		}
 		currentPlayer = b.getCurrentPlayer();
 	}
-	
+	public Board(Integer[][] b, int cp) {
+		super();
+		board = b;
+		currentPlayer = cp;
+	}
 	public int getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -56,7 +66,7 @@ public class Board extends JPanel{
 	}
 	
 	public Integer[][] getBoard(){
-		return board;
+		return board.clone();
 	}
 	
 	public boolean dropPiece(int piece, int col) {
@@ -70,7 +80,7 @@ public class Board extends JPanel{
 			// place piece
 			board[col][i] = piece;
 			totalMoves ++;
-			System.out.println(evaluate());
+			//System.out.println(evaluate());
 			return true; // success
 		}
 		return false; // failed to place piece!
