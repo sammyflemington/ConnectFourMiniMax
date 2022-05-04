@@ -40,11 +40,10 @@ public class ConnectFour extends JFrame{
 			displayBoard.dropPiece(1, col);
 			Node startNode = new Node(getBoard(), 1, null);
 			startNode.setMove(col);
-			Node chosen = mm.minimaxNodeAB(startNode, 1, -999999, 999999, false);
+			Node chosen = mm.minimaxNodeAB(startNode, 5, -9999, 9999, false);
+			//Node chosen = mm.minimaxNode(startNode, 2,false);
+			System.out.println("Started with:" );
 			System.out.println(startNode.toString());
-			// Now we have constructed the whole tree.
-			// pick the best next node
-
 			
 			displayBoard.dropPiece(chosen.getNextPlayer(), chosen.getMove());
 			

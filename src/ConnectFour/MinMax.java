@@ -22,8 +22,8 @@ public class MinMax {
 				if (eval > maxEval)
 					best = child; 
 				maxEval = Math.max(maxEval, eval);
-				//System.out.println(child);
 			}
+			
 			return best;
 		}else {
 			int minEval = 10000;
@@ -35,7 +35,6 @@ public class MinMax {
 				if (eval < minEval)
 					best = child;
 				minEval = Math.min(minEval, eval);
-				
 			}
 			return best;
 		}
@@ -45,44 +44,42 @@ public class MinMax {
 		if (depth == 0) {
 			return n;
 		}
+		// Find successive nodes now so we can return if there are none.
+		n.findSuccessors();
+		Node best = null;
+		if (n.getSuccessors().size() > 0)
+			best = n.getSuccessors().get(0);
+		else
+			return n;
 		
 		if (maximizingPlayer) {
 			int maxEval = -10000;
-			n.findSuccessors();
-			// find the best possible next node
-			Node best = n.getSuccessors().get(0);
 			for (Node child : n.getSuccessors()) {
-				Node evalNode = minimaxNodeAB(child, depth-1, alpha, beta, false);
+				Node evalNode = minimaxNode(child, depth-1, false);
 				int eval = evalNode.getValue();
-				alpha = Math.max(alpha, eval);
-	
 				if (eval > maxEval)
 					best = child; 
 				maxEval = Math.max(maxEval, eval);
+				
+				alpha = Math.max(alpha, maxEval);
 				if (beta <= alpha) {
 					break;
 				}
-				//System.out.println(child);
 			}
+			
 			return best;
 		}else {
 			int minEval = 10000;
-			n.findSuccessors();
-			Node best = n.getSuccessors().get(0);
 			for (Node child : n.getSuccessors()) {
-				Node evalNode = minimaxNodeAB(child, depth-1, alpha, beta, true);
+				Node evalNode = minimaxNode(child, depth-1, true);
 				int eval = evalNode.getValue();
-				beta = Math.min(beta, eval);
-				
 				if (eval < minEval)
 					best = child;
 				minEval = Math.min(minEval, eval);
-				
+				beta = Math.min(beta,  minEval);
 				if (beta <= alpha) {
-					//System.out.println("Pruned!");
 					break;
-				}	
-				
+				}
 			}
 			return best;
 		}

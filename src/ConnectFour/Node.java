@@ -32,7 +32,7 @@ public class Node {
 			if (board.checkCanPlace(i)) {
 				// create a new branch
 				Board b = new Board(board); // copy board
-				b.dropPiece(nextPlayer(thisPlayer), i);
+				if (!b.dropPiece(nextPlayer(thisPlayer), i)) break;
 				Node n = new Node(b, nextPlayer(thisPlayer), this);
 				//System.out.println(n.toString());
 				n.setMove(i);
@@ -64,15 +64,13 @@ public class Node {
 	}
 	
 	public String toString() {
-		String s = "";
+		String s = String.valueOf(getValue()) + '\n';
 		for (Integer[] r : board.getBoard()) {
 			for (Integer c : r) {
 				s += String.valueOf((int) c);
 			}
 			s += '\n';
 		}
-		s += '\n';
-		s += String.valueOf(getValue());
 		return s;
 	}
 	
