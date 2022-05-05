@@ -51,7 +51,7 @@ public class Board extends JPanel{
 			while (reader.hasNextLine()) {
 				String line = reader.nextLine();
 				if (line.length() < 5)
-					break;
+					currentPlayer = Integer.parseInt(line);
 				
 				for (int i = 0; i < line.length(); i++) {
 					char c = line.charAt(i);

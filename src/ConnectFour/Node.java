@@ -28,16 +28,20 @@ public class Node {
 		return parent;
 	}
 	public void findSuccessors() {
-		for (int i = 0; i < 7; i++) { // there are only 7 columns where we can place a piece
-			if (board.checkCanPlace(i)) {
-				// create a new branch
-				Board b = new Board(board); // copy board
-				if (!b.dropPiece(nextPlayer(thisPlayer), i)) break;
-				Node n = new Node(b, nextPlayer(thisPlayer), this);
-				//System.out.println(n.toString());
-				n.setMove(i);
-				successors.add(n);
+		try {
+			for (int i = 0; i < 7; i++) { // there are only 7 columns where we can place a piece
+				if (board.checkCanPlace(i)) {
+					// create a new branch
+					Board b = new Board(board); // copy board
+					if (!b.dropPiece(nextPlayer(thisPlayer), i)) break;
+					Node n = new Node(b, nextPlayer(thisPlayer), this);
+					//System.out.println(n.toString());
+					n.setMove(i);
+					successors.add(n);
+				}
 			}
+		}catch(IndexOutOfBoundsException e) {
+			System.out.println(e);
 		}
 	}
 	

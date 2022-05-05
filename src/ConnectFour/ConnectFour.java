@@ -12,14 +12,14 @@ import javax.swing.JOptionPane;
 public class ConnectFour extends JFrame{
 	static Board displayBoard;
 	private int turn = 1;
-	private MinMax mm;
+	private MiniMax mm;
 	public ConnectFour() {
 		super();
 		displayBoard = new Board(1);
 		displayBoard.loadFile("data/input2.txt");
 		add(displayBoard, BorderLayout.CENTER);
 		addMouseListener(new GameListener());
-		mm = new MinMax(displayBoard, 1);
+		mm = new MiniMax(displayBoard, 1);
 	}
 	
 	// this is bad implemnetation bc what if piece placement fails
@@ -37,23 +37,23 @@ public class ConnectFour extends JFrame{
 			int colWidth = getWidth() / displayBoard.getNumCols();
 			int col = Math.round(x / colWidth);
 			// try to place a piece here for player 
-			displayBoard.dropPiece(1, col);
+			displayBoard.dropPiece(1, col); 
 			Node startNode = new Node(getBoard(), 1, null);
 			startNode.setMove(col);
-			Node chosen = mm.minimaxNodeAB(startNode, 5, -9999, 9999, false);
-			//Node chosen = mm.minimaxNode(startNode, 2,false);
+			//Node chosen = mm.minimaxNodeAB(startNode, 5, -9999, 9999, false);
+			Node chosen = mm.minimaxNode(startNode, 4, false);
 			System.out.println("Started with:" );
 			System.out.println(startNode.toString());
 			
 			displayBoard.dropPiece(chosen.getNextPlayer(), chosen.getMove());
 			
-			System.out.println("Chose:" );
+			System.out.println("Chose the following set of moves:" );
 			while (chosen != null) {
 				System.out.println(chosen.toString());
 				chosen = chosen.getParent();
 			}
 			
-			System.out.println(displayBoard.evaluate());
+			//System.out.println(displayBoard.evaluate());
 			
 			repaint();	// Repaint the panel
 		}
