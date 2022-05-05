@@ -16,7 +16,7 @@ public class ConnectFour extends JFrame{
 	public ConnectFour() {
 		super();
 		displayBoard = new Board(1);
-		displayBoard.loadFile("data/input2.txt");
+		displayBoard.loadFile("data/input1.txt");
 		add(displayBoard, BorderLayout.CENTER);
 		addMouseListener(new GameListener());
 		mm = new MiniMax(displayBoard, 1);
@@ -40,8 +40,8 @@ public class ConnectFour extends JFrame{
 			displayBoard.dropPiece(1, col); 
 			Node startNode = new Node(getBoard(), 1, null);
 			startNode.setMove(col);
-			//Node chosen = mm.minimaxNodeAB(startNode, 5, -9999, 9999, false);
-			Node chosen = mm.minimaxNode(startNode, 4, false);
+			Node chosen = mm.minimaxNodeAB(startNode, 5, -9999, 9999, false);
+			//Node chosen = mm.minimaxNode(startNode, 4, false);
 			System.out.println("Started with:" );
 			System.out.println(startNode.toString());
 			
@@ -75,5 +75,7 @@ public class ConnectFour extends JFrame{
 		game.setSize(720,720);
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
 		game.setVisible(true);
+		
+		
 	}
 }

@@ -1,6 +1,8 @@
 package ConnectFour;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MiniMax {
 	Node start;
@@ -23,9 +25,10 @@ public class MiniMax {
 			for (Node child : n.getSuccessors()) {
 				Node evalNode = minimaxNode(child, depth-1, false);
 				int eval = evalNode.getValue();
-				if (eval > maxEval)
+				if (eval > maxEval) {
 					best = child; 
-				maxEval = Math.max(maxEval, eval);
+					maxEval = eval;
+				}
 			}
 			
 			return best;
@@ -34,9 +37,10 @@ public class MiniMax {
 			for (Node child : n.getSuccessors()) {
 				Node evalNode = minimaxNode(child, depth-1, true);
 				int eval = evalNode.getValue();
-				if (eval < minEval)
+				if (eval < minEval) {
 					best = child;
-				minEval = Math.min(minEval, eval);
+					minEval = eval;
+				}
 			}
 			return best;
 		}
@@ -59,9 +63,10 @@ public class MiniMax {
 			for (Node child : n.getSuccessors()) {
 				Node evalNode = minimaxNode(child, depth-1, false);
 				int eval = evalNode.getValue();
-				if (eval > maxEval)
+				if (eval > maxEval) {
 					best = child; 
-				maxEval = Math.max(maxEval, eval);
+					maxEval = eval;
+				}
 				
 				alpha = Math.max(alpha, maxEval);
 				if (beta <= alpha) {
@@ -75,9 +80,10 @@ public class MiniMax {
 			for (Node child : n.getSuccessors()) {
 				Node evalNode = minimaxNode(child, depth-1, true);
 				int eval = evalNode.getValue();
-				if (eval < minEval)
+				if (eval < minEval) {
 					best = child;
-				minEval = Math.min(minEval, eval);
+					minEval = eval;
+				}
 				beta = Math.min(beta,  minEval);
 				if (beta <= alpha) {
 					break;
@@ -115,6 +121,35 @@ public class MiniMax {
 		// arg 0 is the input file, arg 1 is computer-next or human-next, arg 2 is depth.
 		Board board = new Board(1);
 		board.loadFile(args[0]);
+		int depth = Integer.parseInt(args[2]);
+		
+		Scanner in = new Scanner(System.in);
+		if (args[1].equals("computer-next")) {
+			
+			
+			
+		}else{
+			MiniMax mm = new MiniMax(board, 1);
+			while(true) {
+				System.out.println("Current board state:");
+				System.out.println(board.toString());
+				System.out.println("Score: " + Integer.toString(board.evaluate()));
+				System.out.println("Choose your move! Enter a column 1-8: ");
+				// Get player move
+				int move = 0;
+				while (board.checkCanPlace(move)) {
+					move = in.nextInt();
+				}
+				board.dropPiece(1, move);
+				
+				// Calculate best AI move
+				Node startNode = new Node(board, 1, null);
+				Node chosen = mm.minimaxNodeAB(startNode, 5, -9999, 9999, false);
+				
+				// Play AI move
+				board.dropPiece(2, chosen.getMove());
+			}
+		}
 		
 		
 	}

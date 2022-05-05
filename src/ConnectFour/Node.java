@@ -34,7 +34,7 @@ public class Node {
 					// create a new branch
 					Board b = new Board(board); // copy board
 					if (!b.dropPiece(nextPlayer(thisPlayer), i)) break;
-					Node n = new Node(b, nextPlayer(thisPlayer), this);
+					Node n = new Node(b, nextPlayer(thisPlayer), this); // ???
 					//System.out.println(n.toString());
 					n.setMove(i);
 					successors.add(n);

@@ -50,9 +50,9 @@ public class Board extends JPanel{
 			int j = 0;
 			while (reader.hasNextLine()) {
 				String line = reader.nextLine();
-				if (line.length() < 5)
-					currentPlayer = Integer.parseInt(line);
-				
+				if (line.length() < 5) {
+					break;
+				}
 				for (int i = 0; i < line.length(); i++) {
 					char c = line.charAt(i);
 					board[i][j] = Character.getNumericValue(c);
@@ -86,8 +86,10 @@ public class Board extends JPanel{
 		return false; // failed to place piece!
 	}
 	public boolean checkCanPlace(int col) {
-		if (board[col][0].equals(0)) {
-			return true;
+		if (col >= 0 && col < WIDTH) {
+			if (board[col][0].equals(0)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -124,6 +126,7 @@ public class Board extends JPanel{
 		}
 		return data;
 	}
+	
 	// Finds value of board for specified player (1 or 2)
 	public int evaluate() {
 		// https://stackoverflow.com/questions/20802509/java-for-loops-how-to-check-for-winner-in-connect-4-program
@@ -155,24 +158,39 @@ public class Board extends JPanel{
 		// Now check for four in a row!
 		int points = 0;
 		// Generate key string
-		String key = "";
-		for (int i = 0; i < 4; i++) {
-			key += Integer.toString(1);
-		}
+		String key = "1111";
 		for (String s : data) {
-			if (s.contains(key)) {
-				points ++;
+			ArrayList<String> parts = new ArrayList<String>();
+			if (s.length() > 4) {
+				for (int i = 0; i < s.length() - 3; i++) {
+					parts.add(s.substring(i, i+4));
+				}
+			}else {
+				parts.add(s);
+			}
+			for (String part : parts) {
+				if (part.contains(key)) {
+					points ++;
+				}
 			}
 		}
 		
 		// now check opposing player (2)
-		key = "";
-		for (int i = 0; i < 4; i++) {
-			key += Integer.toString(2);
-		}
+		key = "2222";
 		for (String s : data) {
-			if (s.contains(key)) {
-				points --;
+			ArrayList<String> parts = new ArrayList<String>();
+			if (s.length() > 4) {
+				for (int i = 0; i < s.length() - 3; i++) {
+					parts.add(s.substring(i, i + 4));
+				}
+			}else {
+				parts.add(s);
+			}
+			for (String part : parts) {
+				//System.out.println(part);
+				if (part.contains(key)) {
+					points --;
+				}
 			}
 		}
 		return points;
@@ -212,5 +230,16 @@ public class Board extends JPanel{
 	}
 	public int getNumCols() {
 		return WIDTH;
+	}
+	
+	public String toString() {
+		String s = "";
+		for (int i = 0; i < WIDTH; i++) {
+			for (int j = 0; j < HEIGHT; j++) {
+				s += board[i][j].toString();
+			}
+			s += '\n';
+		}
+		return s;
 	}
 }
